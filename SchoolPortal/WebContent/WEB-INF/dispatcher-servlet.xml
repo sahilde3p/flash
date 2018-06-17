@@ -21,11 +21,13 @@
         <bean id="ViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">
             <property name="ViewClass" value="org.springframework.web.servlet.view.JstlView"></property>
             <property name="prefix">
-                <value>/pages/</value>
+                <value>/</value>
             </property>
             <property name="suffix">
                 <value>.jsp</value>
             </property>
         </bean>
+         <mvc:resources mapping="/resources/**" location="/resources/" />
+	<mvc:annotation-driven />
 
 </beans>
