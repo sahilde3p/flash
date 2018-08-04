@@ -1,30 +1,40 @@
 package com.sahil;
 
 
-import java.util.Random;
 
+import java.util.Random;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+
 public class Handler {
 	String passValidation = null;
+	
+	@Autowired
+	private ServletContext context;
+
+	public void setServletContext(ServletContext servletContext) {
+	    this.context = servletContext;
+	}
 
 	@RequestMapping("/login")
 	public String login(@RequestParam("username") String user, @RequestParam("password") String pass,
 			HttpServletRequest req, Model m) {
-		
-		if (JdbcDao.authenticate(user, pass)) {
-			HttpSession session = req.getSession();
-			session.setAttribute("login", 1);
+		System.out.println(context.getContextPath());
+		System.out.println();
+		if (JdbcDao.authenticate(user, pass, req)) {
+			
+			
+			
 			return "redirect: welcome.jsp";
 		} else {
 
@@ -67,18 +77,22 @@ public class Handler {
 			}
 			else {
 				mv.addObject("error", "Couldnot access Database. Please Try Again later");
+				mv.addObject("userinfo", userInfo);
 				return mv;
 			}
 		}
 		else {
 			mv.addObject("error","This Email is already used for another account");
+			mv.addObject("userinfo", userInfo);
 			return mv;
 		}
 			
 
 			
 		} else {
+			
 			mv.addObject("error", passValidation);
+			mv.addObject("userinfo", userInfo);
 			return mv;
 		}
 	}
@@ -168,6 +182,20 @@ public class Handler {
 		else {
 			return false;
 		}
+	}
+	public void setup(String firstName,String lastName, String email, String course,HttpServletRequest req) {
+		
+		UserInfo user = new UserInfo();
+		user.setFirstName(firstName);
+		user.setLastName(lastName);
+		user.setEmail(email);
+		user.setCourse(course);
+		
+		HttpSession session = req.getSession();
+		
+		session.setAttribute("login", user);
+		
+		
 	}
 
 }

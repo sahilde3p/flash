@@ -1,6 +1,12 @@
 package com.sahil;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
+
 
 public class JdbcDao {
 	static Connection con=null;
@@ -57,16 +63,26 @@ public class JdbcDao {
 		 }
         return false;
 	}
-	public static boolean authenticate(String userName,String pass) {
+	public static boolean authenticate(String userName,String pass,HttpServletRequest req) {
 		connect();
 		try {
-			pst = con.prepareStatement("select * from regforum where BINARY userid=? and BINARY password=?");
+			pst = con.prepareStatement("select * from regforum where userid=? and BINARY password=?");
 			pst.setString(1, userName);
 			pst.setString(2, pass);
 			ResultSet rs = pst.executeQuery();
 			
 			if(rs.next()) {
+				Handler handle = new Handler();
+				String firstName = rs.getString("firstname");
+				String lastName = rs.getString("lastname");
+				String email = rs.getString("email");
+				String course = rs.getString("courses");
+				handle.setup(firstName, lastName, email, course,req);
+				
+				
+				
 				return true;
+				
 			}
 			else {
 				return false;
@@ -169,4 +185,5 @@ public class JdbcDao {
 		return "";
 	
 	}
+	
 }

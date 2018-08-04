@@ -31,11 +31,13 @@
 <!--===============================================================================================-->
 </head>
 <body>
-	<%if(session.getAttribute("login")!=null){
+	
+		<%
+	response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+	if (session.getAttribute("login") != null) {
 		response.sendRedirect("welcome.jsp");
-		}
-		else{}
-		%>
+	}
+%>
 	
 	<div class="limiter">
 		<div class="container-login100">

@@ -31,12 +31,12 @@
 <!--===============================================================================================-->
 </head>
 <body>
-	
-		<%if(session.getAttribute("login")!=null){
+	<%
+	response.setHeader("Cache-Control", "no-store,no-cache,must-revalidate");
+	if (session.getAttribute("login") != null) {
 		response.sendRedirect("welcome.jsp");
-		}
-		else{}
-		%>
+	}
+%>
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-50 p-b-90">
@@ -47,17 +47,17 @@
 
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Firstname is required">
-						<input class="input100" type="text" name="firstName" placeholder="First Name">
+						<input class="input100" type="text" name="firstName" placeholder="First Name" value="${userinfo.firstName}">
 						<span class="focus-input100"></span>
 					</div>
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Lastname is required">
-						<input class="input100" type="text" name="lastName" placeholder="Last Name">
+						<input class="input100" type="text" name="lastName" placeholder="Last Name" value="${userinfo.lastName}">
 						<span class="focus-input100"></span>
 					</div>
 					
 					<div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
-						<input class="input100" type="text" name="email" placeholder="Email">
+						<input class="input100" type="text" name="email" placeholder="Email" value="${userinfo.email}">
 						<span class="focus-input100"></span>
 					</div>
 					
@@ -72,10 +72,10 @@
 						<span class="focus-input100"></span>
 					</div>
 					
-					<div class="wrap-input100 validate-input m-b-16" data-validate = "Email is required">
+					<div class="wrap-input100 validate-input m-b-16" data-validate = "Course is required">
 						<select name="course" class="input100">
 
-						
+						<option value="" selected hidden="true">--Select Course--</option>
 						<option value="Computer Programmer">Computer Programmer</option>
 						<option value="Wireless Networking">Wireless Networking</option>
 						<option value="Business Management">Business Management</option>
@@ -93,6 +93,11 @@
 						<button class="login100-form-btn">
 							SignUp
 						</button>
+					</div>
+					<div class="container-login100-form-btn m-t-17">
+						<a class="login100-form-btn" href="index.jsp">
+							Login
+						</a>
 					</div>
 
 				</form>
